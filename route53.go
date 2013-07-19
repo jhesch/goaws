@@ -9,6 +9,7 @@ import (
 type Route53 struct {
 	auth *Auth
 }
+
 type ListHostedZonesResponse struct {
 	XMLName     xml.Name `xml:"ListHostedZonesResponse"`
 	HostedZones []HostedZones
@@ -16,6 +17,12 @@ type ListHostedZonesResponse struct {
 	IsTruncated bool
 	NextMarker  string
 	MaxItems    int
+}
+
+type GetHostedZoneResponse struct {
+	XMLName       xml.Name `xml:"GetHostedZoneResponse"`
+	HostedZone    []HostedZone
+	DelegationSet DelegationSet
 }
 
 type HostedZones struct {
@@ -37,8 +44,12 @@ type Config struct {
 	Comment string
 }
 
+type NameServers struct {
+	NameServer []string
+}
+
 type DelegationSet struct {
-	NameServers []string
+	NameServers NameServers
 }
 
 var route53Endpoint = func() string {
@@ -87,4 +98,19 @@ func (r *Route53) GetHostedZones() []HostedZone {
 	zones := r.getHostedZonesChunk("", hostedZones)
 
 	return zones
+}
+
+// get a single hosted zone entity
+func (r *Route53) GetHostedZone(id string) GetHostedZoneResponse {
+	url := fmt.Sprintf("%s%s", route53Endpoint, id)
+
+	result, err := request(&RequestParams{Url: url, Auth: r.auth})
+
+	v := GetHostedZoneResponse{}
+	err = xml.Unmarshal(result, &v)
+	if err != nil {
+		return v
+	}
+
+	return v
 }

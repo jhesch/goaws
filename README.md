@@ -41,6 +41,10 @@ documentation
         r := goaws.NewRoute53(AccessKey, SecretKey)
         zones := r.GetHostedZones()
 
+        for _, zone := range zones {
+          singleZone := r.GetHostedZone(zone.Id)
+        }
+
 contributing
 ============
 
