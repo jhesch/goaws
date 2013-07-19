@@ -13,7 +13,8 @@ type RequestParams struct {
 	Method string
 }
 
-func GetCurrentDate() string {
+// fetch the aws server date
+func getCurrentDate() string {
 	response, err := http.Get("https://route53.amazonaws.com/date")
 	if err != nil {
 		log.Print("Unable to get date from amazon: ", err)
@@ -24,7 +25,8 @@ func GetCurrentDate() string {
 	return date
 }
 
-func Request(params *RequestParams) ([]byte, error) {
+// do the request
+func request(params *RequestParams) ([]byte, error) {
 	if params.Url == "" {
 		return []byte(""), errors.New("No Url parameter given")
 	}
@@ -32,7 +34,7 @@ func Request(params *RequestParams) ([]byte, error) {
 		return []byte(""), errors.New("No Auth given")
 	}
 
-	date := GetCurrentDate()
+	date := getCurrentDate()
 	if date == "" {
 		return []byte(""), errors.New("Unable to fetch Amazons reference date")
 	}
@@ -45,7 +47,7 @@ func Request(params *RequestParams) ([]byte, error) {
 	}
 
 	req, err := http.NewRequest(method, params.Url, nil)
-	requestHeader, err := params.Auth.GetHeader(date)
+	requestHeader, err := params.Auth.getHeader(date)
 	if err != nil {
 		return []byte(""), errors.New("Failed to create Authorization Headers")
 	}

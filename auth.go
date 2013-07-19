@@ -27,6 +27,6 @@ func (a *Auth) authorize(message string) string {
 	return string(data)
 }
 
-func (a *Auth) GetHeader(date string) (string, error) {
+func (a *Auth) getHeader(date string) (string, error) {
 	return fmt.Sprintf("AWS3-HTTPS AWSAccessKeyId=%s,Algorithm=%s,Signature=%s", a.accessKey, a.algorithm, a.authorize(date)), nil
 }

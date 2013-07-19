@@ -62,7 +62,7 @@ func (r *Route53) getHostedZonesChunk(marker string, zones []HostedZone) []Hoste
 		url = fmt.Sprintf("%s&marker=%s", url, marker)
 	}
 
-	result, err := Request(&RequestParams{Url: url, Auth: r.auth})
+	result, err := request(&RequestParams{Url: url, Auth: r.auth})
 
 	v := ListHostedZonesResponse{}
 	err = xml.Unmarshal(result, &v)
