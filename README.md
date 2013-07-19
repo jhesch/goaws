@@ -33,21 +33,13 @@ see the examples for usage.
 [4]: http://golang.org/doc/install/source
 [5]: http://golang.org/doc/install
 
-sample usage
-------------
+documentation
+-------------
 AccessKey := "YoUrAcCeSsKeY"
 SecretKey := "YoUrSeCrEtKeY"
 
 r := goaws.NewRoute53(AccessKey, SecretKey)
 zones := r.GetHostedZones()
-
-
-LICENSE
--------
-BSD
-
-documentation
--------------
 
 contributing
 ============
