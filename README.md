@@ -35,11 +35,11 @@ see the examples for usage.
 
 documentation
 -------------
-  AccessKey := "YoUrAcCeSsKeY"
-  SecretKey := "YoUrSeCrEtKeY"
+        AccessKey := "YoUrAcCeSsKeY"
+        SecretKey := "YoUrSeCrEtKeY"
 
-  r := goaws.NewRoute53(AccessKey, SecretKey)
-  zones := r.GetHostedZones()
+        r := goaws.NewRoute53(AccessKey, SecretKey)
+        zones := r.GetHostedZones()
 
 contributing
 ============
@@ -51,5 +51,5 @@ git commit hooks
 -----------------------
 enable commit hooks via
 
-  cd .git ; rm -rf hooks; ln -s ../git-hooks hooks ; cd ..
+        cd .git ; rm -rf hooks; ln -s ../git-hooks hooks ; cd ..
 
