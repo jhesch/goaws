@@ -24,17 +24,17 @@ func GetCurrentDate() string {
 	return date
 }
 
-func Request(params *RequestParams) (string, error) {
+func Request(params *RequestParams) ([]byte, error) {
 	if params.Url == "" {
-		return "", errors.New("No Url parameter given")
+		return []byte(""), errors.New("No Url parameter given")
 	}
 	if params.Auth == nil {
-		return "", errors.New("No Auth given")
+		return []byte(""), errors.New("No Auth given")
 	}
 
-  date := GetCurrentDate()
+	date := GetCurrentDate()
 	if date == "" {
-		return "", errors.New("Unable to fetch Amazons reference date")
+		return []byte(""), errors.New("Unable to fetch Amazons reference date")
 	}
 
 	client := &http.Client{}
@@ -47,21 +47,20 @@ func Request(params *RequestParams) (string, error) {
 	req, err := http.NewRequest(method, params.Url, nil)
 	requestHeader, err := params.Auth.GetHeader(date)
 	if err != nil {
-		return "", errors.New("Failed to create Authorization Headers")
+		return []byte(""), errors.New("Failed to create Authorization Headers")
 	}
 	req.Header.Add("X-Amzn-Authorization", requestHeader)
 	req.Header.Add("X-Amz-Date", date)
 	resp, err := client.Do(req)
 	defer resp.Body.Close()
 	if err != nil {
-		return "", err
+		return []byte(""), err
 	}
 
-	respBody, err := ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return "", err
+		return []byte(""), err
 	}
-  body := string(respBody)
 
 	return body, nil
 }
